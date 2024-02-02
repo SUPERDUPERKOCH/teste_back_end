@@ -43,15 +43,13 @@ class RedirectController extends Controller
         return $redirects;
     }
 
-   public function add()
-   { 
+    public function add()
+    { 
+       return view('redirect.add');
+    }
 
-        return view('redirect.add');
-
-   }
-
-   public function create(Request $request)
-   { 
+    public function create(Request $request)
+    { 
         $redirect= Redirect::create([
             'status' => $request->input('status'),
             'ultimo_acesso' => $request->input('ultimo_acesso'),
@@ -59,44 +57,41 @@ class RedirectController extends Controller
         ]);
     
         return response()->json(200);
-   }
+    }
 
-   public function edit($encoded_id) 
-   { 
-
+    public function edit($encoded_id) 
+    { 
         $redirect = Redirect::find($encoded_id);
     
         return view('redirect.edit', compact('redirect'));
-
-   }
+    }
 
    public function update(Request $request, $encoded_id)
-   { 
-
+    { 
         $redirect_model = new Redirect();
         $id = $redirect_model->decode($encoded_id);
 
-            $redirect = Redirect::where('id', $id)->update([
+          $redirect = Redirect::where('id', $id)->update([
                'status' => $request->input('status'),
                'ultimo_acesso' => $request->input('ultimo_acesso'),
                'url_destino' => $request->input('url_destino'),
            ]);
 
         return response()->json(200);
-   }
+    }
 
-   public function delete(Request $request, $encoded_id)
-   { 
+    public function delete(Request $request, $encoded_id)
+    { 
         $redirect_model = new Redirect();
         $id = $redirect_model->decode($encoded_id);
 
         $redirect = Redirect::destroy($id);
 
         return response()->json(200);
-   }
+    }
 
-   public function stats($encoded_id)
-   {
+    public function stats($encoded_id)
+    {
         //Total acessos
         $quantidade_acesso = RedirectLog::where('header_referer', env('APP_URL') . '/' . 'r/' . $encoded_id)->count();
 
@@ -122,5 +117,5 @@ class RedirectController extends Controller
 
 
         return response()->json(['quantidade_acesso' => $quantidade_acesso, 'quantidade_ip' => $quantidade_ip, 'top_referers' => $top_referers, 'Últimos dez dias' => ['date' =>Carbon::now()->subDay(10), 'dez_ultimos_acessos' => $dez_ultimos_acessos, 'dez_ultimos_ips' => $dez_ultimos_ips]]);
-   }
+    }
 }

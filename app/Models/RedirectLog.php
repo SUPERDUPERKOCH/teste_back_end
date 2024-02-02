@@ -19,6 +19,5 @@ class RedirectLog extends Model
         'header_referer',
         'query_params',
         'data_hora_acesso',
-
     ];
 }
